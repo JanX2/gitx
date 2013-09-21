@@ -22,7 +22,7 @@
 
 - (void) awakeFromNib {
 	NSString *stringToDisplay = [NSString stringWithFormat:@"%@:", [cmdWithParameter parameterDisplayName]];
-	[view.label setTitleWithMnemonic:stringToDisplay];
+	[view.label setStringValue:stringToDisplay];
 }
 
 - (IBAction) okClicked:sender {
