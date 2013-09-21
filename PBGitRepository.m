@@ -288,7 +288,7 @@ dispatch_queue_t PBGetWorkQueue() {
 - (PBGitWindowController *)windowController
 {
 	if ([[self windowControllers] count] == 0)
-		return NULL;
+		return nil;
 	
 	return [[self windowControllers] objectAtIndex:0];
 }
