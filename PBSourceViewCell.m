@@ -45,19 +45,26 @@
 
 - (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)outlineView
 {
-	if(badge){		
+	const CGFloat kTopPadding = 3.0;
+	const CGFloat kRightPadding = 3.0;
+	
+	if(badge){
 		NSImage *checkedOutImage = [PBSourceViewBadge badge:badge forCell:self];
 		NSSize imageSize = [checkedOutImage size];
-		NSRect imageFrame;
-		NSDivideRect(cellFrame, &imageFrame, &cellFrame, imageSize.width + 3, NSMaxXEdge);
+		NSRect imageFrame, newCellFrame;
+		NSDivideRect(cellFrame, &imageFrame, &newCellFrame, (imageSize.width + kRightPadding), NSMaxXEdge);
+		
 		imageFrame.size = imageSize;
+		imageFrame.origin.y += kTopPadding;
 		
-		if ([outlineView isFlipped])
-			imageFrame.origin.y += floor((cellFrame.size.height + imageFrame.size.height) / 2);
-		else
-			imageFrame.origin.y += ceil((cellFrame.size.height - imageFrame.size.height) / 2);
+		[checkedOutImage drawInRect:imageFrame
+						   fromRect:NSZeroRect
+						  operation:NSCompositeSourceOver
+						   fraction:1.0
+					 respectFlipped:YES
+							  hints:nil];
 		
-		[checkedOutImage compositeToPoint:imageFrame.origin operation:NSCompositeSourceOver];
+		cellFrame = newCellFrame;
 	}
 	
 	[super drawWithFrame:cellFrame inView:outlineView];

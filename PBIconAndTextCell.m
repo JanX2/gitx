@@ -30,25 +30,31 @@
 
 - (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
+	const CGFloat kTopPadding = 2.0;
+	const CGFloat kLeftPadding = 3.0;
+	
 	if (image) {
 		NSSize  imageSize;
 		NSRect  imageFrame;
 
 		imageSize = [image size];
-		NSDivideRect(cellFrame, &imageFrame, &cellFrame, 3 + imageSize.width, NSMinXEdge);
+		NSDivideRect(cellFrame, &imageFrame, &cellFrame, (kLeftPadding + imageSize.width), NSMinXEdge);
+		
 		if ([self drawsBackground]) {
 			[[self backgroundColor] set];
 			NSRectFill(imageFrame);
 		}
-		imageFrame.origin.x += 3;
+		
 		imageFrame.size = imageSize;
-
-		if ([controlView isFlipped])
-			imageFrame.origin.y += floor((cellFrame.size.height + imageFrame.size.height) / 2);
-		else
-			imageFrame.origin.y += ceil((cellFrame.size.height - imageFrame.size.height) / 2);
-
-		[image compositeToPoint:imageFrame.origin operation:NSCompositeSourceOver];
+		imageFrame.origin.x += kLeftPadding;
+		imageFrame.origin.y += kTopPadding;
+		
+		[image drawInRect:imageFrame
+				 fromRect:NSZeroRect
+				operation:NSCompositeSourceOver
+				 fraction:1.0
+		   respectFlipped:YES
+					hints:nil];
 	}
 	[super drawWithFrame:cellFrame inView:controlView];
 }
