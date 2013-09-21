@@ -9,6 +9,8 @@
 
 #import "PBIconAndTextCell.h"
 
+#import "ADBGeometry.h"
+
 
 @implementation PBIconAndTextCell
 @synthesize image;
@@ -30,15 +32,16 @@
 
 - (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)controlView
 {
-	const CGFloat kTopPadding = 2.0;
 	const CGFloat kLeftPadding = 3.0;
 	
 	if (image) {
 		NSSize  imageSize;
-		NSRect  imageFrame;
+		NSRect  imageFrame, imageRegion;
 
 		imageSize = [image size];
-		NSDivideRect(cellFrame, &imageFrame, &cellFrame, (kLeftPadding + imageSize.width), NSMinXEdge);
+		NSDivideRect(cellFrame, &imageRegion, &cellFrame, (kLeftPadding + imageSize.width), NSMinXEdge);
+		
+		imageFrame = imageRegion;
 		
 		if ([self drawsBackground]) {
 			[[self backgroundColor] set];
@@ -46,8 +49,7 @@
 		}
 		
 		imageFrame.size = imageSize;
-		imageFrame.origin.x += kLeftPadding;
-		imageFrame.origin.y += kTopPadding;
+		imageFrame = alignRectanglesWithAlignment(imageFrame, imageRegion, ADBRectAlignRightCenter);
 		
 		[image drawInRect:imageFrame
 				 fromRect:NSZeroRect

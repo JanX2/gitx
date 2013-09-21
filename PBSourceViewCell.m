@@ -10,6 +10,8 @@
 #import "PBGitSidebarController.h"
 #import "PBSourceViewBadge.h"
 
+#import "ADBGeometry.h"
+
 @interface PBSourceViewCell()
 - (NSRect)infoButtonRectForBounds:(NSRect)bounds;
 - (void)mouseEntered:(NSEvent *)event;
@@ -45,18 +47,19 @@
 
 - (void)drawWithFrame:(NSRect)cellFrame inView:(NSView *)outlineView
 {
-	const CGFloat kTopPadding = 3.0;
 	const CGFloat kRightPadding = 3.0;
 	
 	if(badge){
 		NSImage *checkedOutImage = [PBSourceViewBadge badge:badge forCell:self];
 		NSSize imageSize = [checkedOutImage size];
-		NSRect imageFrame, newCellFrame;
-		NSDivideRect(cellFrame, &imageFrame, &newCellFrame, (imageSize.width + kRightPadding), NSMaxXEdge);
+		NSRect imageFrame, imageRegion, newCellFrame;
+		NSDivideRect(cellFrame, &imageRegion, &newCellFrame, (imageSize.width + kRightPadding), NSMaxXEdge);
+		
+		imageFrame = imageRegion;
 		
 		imageFrame.size = imageSize;
-		imageFrame.origin.y += kTopPadding;
-		
+		imageFrame = alignRectanglesWithAlignment(imageFrame, imageRegion, ADBRectAlignLeftCenter);
+
 		[checkedOutImage drawInRect:imageFrame
 						   fromRect:NSZeroRect
 						  operation:NSCompositeSourceOver
