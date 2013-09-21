@@ -28,7 +28,7 @@
 
 
 - (void) invoke {
-	PBArgumentPickerController *controller = [[PBArgumentPickerController alloc] initWithCommandWithParameter:self];
-	[NSApp beginSheet:[controller window] modalForWindow:[command.repository.windowController window] modalDelegate:controller didEndSelector:nil contextInfo:NULL];
+	controller = [[PBArgumentPickerController alloc] initWithCommandWithParameter:self];
+	[NSApp beginSheet:[controller window] modalForWindow:[command.repository.windowController window] modalDelegate:controller didEndSelector:NULL contextInfo:NULL];
 }
 @end

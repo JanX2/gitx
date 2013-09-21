@@ -9,11 +9,14 @@
 #import <Cocoa/Cocoa.h>
 #import "PBCommand.h"
 
+@class PBArgumentPickerController;
 
 @interface PBCommandWithParameter : PBCommand {
 	PBCommand *command;
 	NSString *parameterName;
 	NSString *parameterDisplayName;
+	
+	PBArgumentPickerController *controller;
 }
 @property (nonatomic, strong, readonly) PBCommand *command;
 @property (nonatomic, strong, readonly) NSString *parameterName;
